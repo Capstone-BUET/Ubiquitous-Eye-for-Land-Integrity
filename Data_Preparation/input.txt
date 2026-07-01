@@ -1,0 +1,7 @@
+Copernicus dataset
+Filtered Sentinel-2 Dataset:
+data1.parquet (1.46 GB)
+data2.parquet (1.46 GB)
+data3.parquet (750.5 MB)
+data3.parquet (750.5 MB)
+data5.parquet (1.46 GB)
