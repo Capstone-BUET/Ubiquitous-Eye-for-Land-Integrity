@@ -1,0 +1,12 @@
+1. Landsat/landsat8_10m_all_bands.csv (2.22 GB)
+2. Fork of capstone model/
+    catboost_info/catboost_training.json
+    catboost_info/learn/events.out.tfevents
+    catboost_info/learn_error.tsv
+    catboost_info/time_left.tsv
+    saved_models/cart.joblib
+    saved_models/catboost.joblib
+    saved_models/label_encoder.joblib
+    saved_models/lightgbm.joblib
+    saved_models/scaler.joblib
+    saved_models/xgboost.jo
