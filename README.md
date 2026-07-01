@@ -1,48 +1,139 @@
 # 🛰️ Ubiquitous-Eye-for-Land-Integrity
 
 ## 📁 Project Structure
-
-\```
-satellite-land-classification/
+```
+Ubiquitous-Eye-for-Land-Integrity/
 │
-├── data/
-│   ├── raw/
-│   │   ├── landsat/
-│   │   │   └── LC08_L2SP_137043_*/
-│   │   └── sentinel2/
-│   │       └── S2A_MSIL2A_*/
-│   │           └── GRANULE/
-│   │               └── IMG_DATA/
-│   │                   ├── R10m/
-│   │                   └── R20m/
-│   └── processed/
-│       └── filtered-sentinel2-dataset/
+├── Frontend                          # React frontend (Vite)
+│   ├── public
+│   ├── src
+│   │   ├── assets
+│   │   ├── components
+│   │   │   ├── LayerSelection.css
+│   │   │   ├── LayerSelection.jsx
+│   │   │   ├── MapView.css
+│   │   │   └── MapView.jsx
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── .dockerignore
+│   ├── .env
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── BACKEND_GUIDE.md
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── README.md
+│   └── vite.config.js
+│
+├── inference                         # ML inference engine
+│   ├── capstone_model_v2             # Trained model files
+│   │   ├── cart.joblib
+│   │   ├── catboost.joblib
+│   │   ├── label_encoder.joblib
+│   │   ├── lightgbm.joblib
+│   │   ├── scaler.joblib
+│   │   └── xgboost.joblib
+│   └── inference.py
+│
+├── server                            # Backend API server
+│   ├── GRANULE                       # Sentinel-2 raw scene data
+│   │   └── L2A_T45QYE_...
+│   │       └── IMG_DATA
+│   │           └── T45QYE_*_SCL_20m.jp2
+│   ├── inference
+│   │   ├── capstone_model_v2
+│   │   └── inference.py
+│   ├── __init__.py
+│   ├── .dockerignore
+│   ├── api_server.py
+│   ├── bimonthly_composite.py
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── scl_to_csv.py
+│
+├── .env
+├── .env.example
+├── bimonthly_composite.py
+├── docker-compose.yml
+├── Dockerfile
+├── frontend.nginx.conf
+├── planet.py
+└── README.md
+```
+
+## 📓 Kaggle Notebooks & Training Data
+
+```
+Kaggle Workspace
+│
+├── Landsat                                         # Raw USGS Landsat 8 scenes
+│   ├── LC08_L2SP_137043_20131106_20200912_02_T1
+│   ├── LC08_L2SP_137043_20131224_20200912_02_T1
+│   └── LC08_L2SP_137043_20140125_20200912_02_T1
+│
+├── Copernicus                                      # Raw Sentinel-2 scenes
+│   ├── S2A_MSIL2A_20201112T043031_N0500_R133_T45QZG_20230324T113157.SAFE
+│   ├── S2A_MSIL2A_20201112T043031_N0500_R133_T45QZG_20230410T140649.SAFE
+│   ├── S2A_MSIL2A_20201122T043111_N0500_R133_T45QZG_20230411T134214.SAFE
+│   └── ...
+│
+├── Landsat_filter                                  # Landsat band extraction
+│   ├── landsat.ipynb
+│   ├── input
+│   │   └── Landsat dataset
+│   └── output
+│       └── landsat8_10m_all_bands.csv               # 2.22 GB
+│
+├── Data_Preparation                                # Sentinel-2 band extraction → Parquet
+│   ├── data-preparation.ipynb
+│   ├── input
+│   │   ├── Copernicus dataset
+│   │   └── Filtered Sentinel-2 dataset
+│   └── output
+│       └── filtered_dataset
 │           ├── data1.parquet
 │           ├── data2.parquet
-│           ├── data3.parquet
-│           ├── data4.parquet
-│           ├── data5.parquet
-│           ├── data6.parquet
-│           ├── data7.parquet
-│           ├── data8.parquet
-│           ├── data9.parquet
-│           ├── data10.parquet
-│           ├── data11.parquet
-│           └── data12.parquet
-├── notebooks/
-│   ├── data-preparation.ipynb
-│   └── capstone-model.ipynb
-├── saved_models/
-│   ├── xgboost.joblib
-│   ├── catboost.joblib
-│   ├── lightgbm.joblib
-│   ├── cart.joblib
-│   ├── label_encoder.joblib
-│   └── scaler.joblib
-└── README.md
-\```
+│           └── ...
+│
+├── Fork-of-capstone-model                          # Multi-model training
+│   ├── fork-of-capstone-model.ipynb
+│   ├── input
+│   │   ├── Filtered Sentinel-2 Dataset
+│   │   └── Datav1.csv
+│   └── Output_model
+│       ├── cart.joblib
+│       ├── catboost.joblib
+│       ├── label_encoder.joblib
+│       ├── lightgbm.joblib
+│       ├── scaler.joblib
+│       └── xgboost.joblib
+│
+└── Inference_Code                                  # Run predictions on Landsat
+    ├── inference-code-d35339.ipynb
+    ├── input
+    │   ├── landsat8_10m_all_bands.csv               # 2.22 GB (from Landsat_filter)
+    │   └── Fork-of-capstone-model
+    │       ├── catboost_info
+    │       │   ├── catboost_training.json
+    │       │   ├── learn
+    │       │   │   └── events.out.tfevents
+    │       │   ├── learn_error.tsv
+    │       │   └── time_left.tsv
+    │       └── saved_models
+    │           ├── cart.joblib
+    │           ├── catboost.joblib
+    │           ├── label_encoder.joblib
+    │           ├── lightgbm.joblib
+    │           ├── scaler.joblib
+    │           └── xgboost.joblib
+    └── output
+        └── landsat_prediction.parquet
+```
 
----
 
 ## 🔄 Pipeline Overview
 
