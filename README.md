@@ -1,4 +1,3 @@
-# testing
 # 🛰️ Ubiquitous-Eye-for-Land-Integrity
 
 ## 📁 Project Structure
