@@ -146,41 +146,41 @@ Data Sources
                        │
                        ▼
           ┌────────────────────────┐
-          │   Step 1              │
-          │   Band Reading &      │
-          │   Normalization       │
-          │   (rasterio / numpy)  │
-          └───────────┬───────────┘
+          │   Step 1               │
+          │   Band Reading &       │
+          │   Normalization        │
+          │   (rasterio / numpy)   │
+          └───────────┬─────────── ┘
                       │
                       ▼
           ┌────────────────────────┐
-          │   Step 2              │
-          │   Index Computation   │
-          │   NDVI, EVI, MNDWI,   │
-          │   NDBI, BSI           │
-          └───────────┬───────────┘
+          │   Step 2               │
+          │   Index Computation    │
+          │   NDVI, EVI, MNDWI,    │
+          │   NDBI, BSI            │
+          └───────────┬─────────── ┘
                       │
                       ▼
           ┌────────────────────────┐
-          │   Step 3              │
-          │   SCL Filter          │
-          │   Keep ClassID 4,5,6  │
-          │   Vegetation/Soil/    │
-          │   Water               │
-          └───────────┬───────────┘
+          │   Step 3               │
+          │   SCL Filter           │
+          │   Keep ClassID 4,5,6   │
+          │   Vegetation/Soil/     │
+          │   Water                │
+          └───────────┬─────────── ┘
                       │
                       ▼
           ┌────────────────────────┐
           │   Filtered Parquet     │
           │   Dataset (~65M rows)  │
-          └───────────┬───────────┘
+          └───────────┬─────────── ┘
                       │
                       ▼
           ┌────────────────────────┐
-          │   Step 4              │
-          │   ML Training         │
-          │   20% test, 3-Fold CV │
-          └───────────┬───────────┘
+          │   Step 4               │
+          │   ML Training          │
+          │   20% test, 3-Fold CV  │
+          └───────────┬─────────── ┘
                       │
         ┌─────────────┼─────────────┐─────────────┐
         ▼             ▼             ▼             ▼
