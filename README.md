@@ -137,48 +137,57 @@ Kaggle Workspace
 
 ## 🔄 Pipeline Overview
 
-\```
-┌─────────────────────┐     ┌──────────────────────┐
-│  USGS Landsat 8     │     │ Copernicus Sentinel-2 │
-│  (Level-2 .TIF)     │     │ (Level-2A .SAFE)      │
-└────────┬────────────┘     └──────────┬────────────┘
-         │   Band data (.jp2/.tif)     │
-         └──────────────┬──────────────┘
-                        ▼
-           ┌────────────────────────┐
-           │  Step 1: Band Reading  │
-           │  & Normalization       │
-           └────────────┬───────────┘
-                        ▼
-           ┌────────────────────────┐
-           │  Step 2: Index         │
-           │  Computation           │
-           │  NDVI, EVI, MNDWI,     │
-           │  NDBI, BSI             │
-           └────────────┬───────────┘
-                        ▼
-           ┌────────────────────────┐
-           │  Step 3: SCL Filter    │
-           │  Keep ClassID 4,5,6    │
-           └────────────┬───────────┘
-                        ▼
-           ┌────────────────────────┐
-           │  Filtered Parquet      │
-           │  Dataset (~65M rows)   │
-           └────────────┬───────────┘
-                        ▼
-           ┌────────────────────────┐
-           │  Step 4: ML Training   │
-           │  (20% test, 3-Fold CV) │
-           └────────────┬───────────┘
-                        │
-        ┌───────────────┼───────────────┐
-        ▼               ▼               ▼
-   XGBoost         LightGBM ✅      CatBoost        CART
-   89.63%          89.67%           89.22%          89.00%
-\```
+```
+Data Sources
+─────────────────────────────────────────────────
+  [USGS Landsat 8]          [Copernicus Sentinel-2]
+  Level-2 .TIF              Level-2A .SAFE
+─────────────────────────────────────────────────
+                       │
+                       ▼
+          ┌────────────────────────┐
+          │   Step 1              │
+          │   Band Reading &      │
+          │   Normalization       │
+          │   (rasterio / numpy)  │
+          └───────────┬───────────┘
+                      │
+                      ▼
+          ┌────────────────────────┐
+          │   Step 2              │
+          │   Index Computation   │
+          │   NDVI, EVI, MNDWI,   │
+          │   NDBI, BSI           │
+          └───────────┬───────────┘
+                      │
+                      ▼
+          ┌────────────────────────┐
+          │   Step 3              │
+          │   SCL Filter          │
+          │   Keep ClassID 4,5,6  │
+          │   Vegetation/Soil/    │
+          │   Water               │
+          └───────────┬───────────┘
+                      │
+                      ▼
+          ┌────────────────────────┐
+          │   Filtered Parquet     │
+          │   Dataset (~65M rows)  │
+          └───────────┬───────────┘
+                      │
+                      ▼
+          ┌────────────────────────┐
+          │   Step 4              │
+          │   ML Training         │
+          │   20% test, 3-Fold CV │
+          └───────────┬───────────┘
+                      │
+        ┌─────────────┼─────────────┐─────────────┐
+        ▼             ▼             ▼             ▼
+  [XGBoost]    [LightGBM ✅]  [CatBoost]     [CART]
+   89.63%        89.67%        89.22%        89.00%
+```
 
----
 
 ## 🗂️ Data Sources
 
